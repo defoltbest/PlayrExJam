@@ -17,11 +17,15 @@ public class Scene2D5Bootstrap : MonoBehaviour
     [SerializeField] Material floorMaterialWood;
     [SerializeField] Material floorMaterialTile;
     [SerializeField] Material wallMaterial;
+    [SerializeField] Material doorMaterial;
 
     [Header("Dimensions")]
     [SerializeField] float floorHeight = 3f;
     [SerializeField] float wallThickness = 0.2f;
     [SerializeField] float doorWidth = 1.2f;
+    [SerializeField] float doorThickness = 0.1f;
+
+    Transform doorsRoot;
 
     [Header("Isometric camera preset")]
     [SerializeField] Vector3 cameraLookAt = new(-1f, 1.5f, 4f);
@@ -37,6 +41,21 @@ public class Scene2D5Bootstrap : MonoBehaviour
         var root = GetOrCreateHouseRoot();
         ClearHouseChildren(root);
         BuildApartment(root);
+        EnsureDoorClicker();
+    }
+
+    void EnsureDoorClicker()
+    {
+        var camera = Camera.main;
+        if (camera == null)
+            return;
+
+        if (!camera.TryGetComponent(out DoorClickController _))
+            camera.gameObject.AddComponent<DoorClickController>();
+
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(camera.gameObject);
+#endif
     }
 
     [ContextMenu("Apply Isometric Camera Preset")]
@@ -59,6 +78,7 @@ public class Scene2D5Bootstrap : MonoBehaviour
             staticCamera = camera.gameObject.AddComponent<StaticCamera2D5>();
 
         staticCamera.SyncFromTransform();
+        EnsureDoorClicker();
 
 #if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(camera.gameObject);
@@ -76,6 +96,9 @@ public class Scene2D5Bootstrap : MonoBehaviour
 
         if (wallMaterial == null)
             wallMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/RoomWall.mat");
+
+        if (doorMaterial == null)
+            doorMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/RoomDoor.mat");
 #endif
     }
 
@@ -95,6 +118,7 @@ public class Scene2D5Bootstrap : MonoBehaviour
 
     void BuildApartment(Transform root)
     {
+        doorsRoot = CreateGroup(root, "Doors");
         BuildFloors(root);
         BuildOuterWalls(root);
         BuildPartitions(root);
@@ -154,20 +178,27 @@ public class Scene2D5Bootstrap : MonoBehaviour
     void BuildStairwell(Transform root)
     {
         var stairwell = CreateGroup(root, "Stairwell");
-        BuildFloor(stairwell, "Floor", -10f, -6f, 0f, 8f, floorMaterialTile);
 
+        // Площадка подъезда на уровне квартиры (передняя часть).
+        CreatePart(stairwell, "Floor",
+            new Vector3(-8f, -wallThickness * 0.5f, 2.27f),
+            new Vector3(4f, wallThickness, 4.51f),
+            floorMaterialTile);
+
+        // Опущенная лестница: ступени стоят на дне приямка (pitFloorY) и поднимаются к уровню квартиры.
         const int steps = 6;
         const float stepDepth = 0.55f;
         const float startZ = 7.2f;
-        var stepWidth = 2.6f;
-        var stepRise = floorHeight / steps;
+        const float pitFloorY = -2.74f;
+        const float riser = 0.5f;
+        var stepWidth = 5f;
         var stepX = -8f;
 
         for (var i = 0; i < steps; i++)
         {
-            var height = stepRise * (i + 1);
+            var height = riser * (i + 1);
             CreatePart(stairwell, $"Step_{i + 1}",
-                new Vector3(stepX, height * 0.5f, startZ - i * stepDepth),
+                new Vector3(stepX, pitFloorY + height * 0.5f, startZ - i * stepDepth),
                 new Vector3(stepWidth, height, stepDepth),
                 wallMaterial);
         }
@@ -199,6 +230,12 @@ public class Scene2D5Bootstrap : MonoBehaviour
                 new Vector3((b0 + xMax) * 0.5f, wy, z),
                 new Vector3(xMax - b0, floorHeight, wallThickness),
                 wallMaterial);
+
+        // Петля (корень с Door) у края проёма; полотно смещено вдоль +X.
+        CreateDoor(name + "_Door",
+            new Vector3(a1, 0f, z),
+            new Vector3(doorWidth, floorHeight, doorThickness),
+            new Vector3(doorWidth * 0.5f, floorHeight * 0.5f, 0f));
     }
 
     // Стена вдоль оси Z (фиксированный X). Необязательный дверной проём по Z.
@@ -227,6 +264,32 @@ public class Scene2D5Bootstrap : MonoBehaviour
                 new Vector3(x, wy, (b0 + zMax) * 0.5f),
                 new Vector3(wallThickness, floorHeight, zMax - b0),
                 wallMaterial);
+
+        // Петля (корень с Door) у края проёма; полотно смещено вдоль +Z.
+        CreateDoor(name + "_Door",
+            new Vector3(x, 0f, a1),
+            new Vector3(doorThickness, floorHeight, doorWidth),
+            new Vector3(0f, floorHeight * 0.5f, doorWidth * 0.5f));
+    }
+
+    // Дверь: корневой объект-петля (с Door) у края проёма + дочернее полотно со смещением.
+    // Door вращает только корень, поэтому перемещение корня сохраняет точку вращения и высоту.
+    void CreateDoor(string name, Vector3 hingeLocalPos, Vector3 panelSize, Vector3 panelOffset)
+    {
+        var hinge = new GameObject(name);
+        hinge.transform.SetParent(doorsRoot);
+        hinge.transform.localPosition = hingeLocalPos;
+        hinge.transform.localRotation = Quaternion.identity;
+        hinge.transform.localScale = Vector3.one;
+        hinge.AddComponent<Door>();
+
+        var panel = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        panel.name = "Panel";
+        panel.transform.SetParent(hinge.transform);
+        panel.transform.localPosition = panelOffset;
+        panel.transform.localScale = panelSize;
+        if (doorMaterial != null)
+            panel.GetComponent<Renderer>().sharedMaterial = doorMaterial;
     }
 
     void BuildFloor(Transform parent, string name, float xMin, float xMax, float zMin, float zMax, Material material)
