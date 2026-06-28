@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 _targetPosition;
     private bool _hasTarget;
     private Camera _mainCamera;
+    private Rigidbody _rb;
 
     private void Awake()
     {
@@ -26,10 +27,11 @@ public class PlayerController : MonoBehaviour
         _targetPosition = transform.position;
 
         // Rigidbody для корректной работы OnTriggerEnter (требуется физическим движком)
-        if (GetComponent<Rigidbody>() == null)
+        _rb = GetComponent<Rigidbody>();
+        if (_rb == null)
         {
-            var rb = gameObject.AddComponent<Rigidbody>();
-            rb.isKinematic = true;
+            _rb = gameObject.AddComponent<Rigidbody>();
+            _rb.isKinematic = true;
         }
 
         // Тег Player для распознавания дверьми
@@ -69,7 +71,7 @@ public class PlayerController : MonoBehaviour
         var right = PlanarAxis(_mainCamera != null ? _mainCamera.transform.right : Vector3.right);
         var direction = (forward * input.y + right * input.x).normalized;
 
-        transform.position += direction * (moveSpeed * Time.deltaTime);
+        _rb.MovePosition(_rb.position + direction * (moveSpeed * Time.deltaTime));
         FaceDirection(direction);
         _hasTarget = false;
         return true;
@@ -101,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
         if (distance < 0.05f)
         {
-            transform.position = _targetPosition;
+            _rb.MovePosition(_targetPosition);
             _hasTarget = false;
             return;
         }
@@ -110,7 +112,7 @@ public class PlayerController : MonoBehaviour
         if (moveStep.magnitude > distance)
             moveStep = direction;
 
-        transform.position += moveStep;
+        _rb.MovePosition(_rb.position + moveStep);
         FaceDirection(direction);
     }
 
