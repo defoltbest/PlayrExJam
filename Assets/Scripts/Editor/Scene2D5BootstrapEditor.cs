@@ -11,9 +11,9 @@ public class Scene2D5BootstrapEditor : Editor
         EditorGUILayout.Space(8);
         EditorGUILayout.HelpBox(
             "Планировка: Hallway, Bathroom, Kitchen, Living, Bedroom + Stairwell (подъезд).\n" +
-            "Двери — группа Doors (петля + Panel с Door). Клик по двери в Play открывает её\n" +
-            "(DoorClickController на камере, новый Input System) — добавляется при Rebuild.\n" +
-            "Rebuild пересобирает всю квартиру заново (включая лестницу и пол подъезда).",
+            "Двери — группа Doors (петля + Panel с Door).\n" +
+            "Rebuild пересобирает всю квартиру заново (включая лестницу и пол подъезда).\n" +
+            "Клик по двери в Play Mode открывает её через Input System (PlayerController → CursorHit → Door).",
             MessageType.Info);
 
         var bootstrap = (Scene2D5Bootstrap)target;

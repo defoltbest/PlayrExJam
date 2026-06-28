@@ -4,8 +4,7 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// Управление персонажем через новый Input System:
 ///  - WASD / стрелки: движение относительно камеры по плоскости пола;
-///  - левый клик по полу: перемещение в точку (клики по дверям игнорируются —
-///    их обрабатывает DoorClickController).
+///  - левый клик по полу/предметам: перемещение в точку.
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
@@ -76,10 +75,6 @@ public class PlayerController : MonoBehaviour
 
         var ray = _mainCamera.ScreenPointToRay(mouse.position.ReadValue());
         if (!Physics.Raycast(ray, out var hit, raycastDistance, groundLayer))
-            return;
-
-        // По двери кликать — открывать её, а не идти сквозь стену.
-        if (hit.collider.GetComponentInParent<Door>() != null)
             return;
 
         _targetPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
