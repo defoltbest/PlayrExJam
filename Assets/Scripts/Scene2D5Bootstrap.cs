@@ -5,9 +5,9 @@ using UnityEngine;
 /// Does not rebuild automatically — edit House in the scene and save (Ctrl+S).
 ///
 /// Layout (top-down, X = ширина, Z = глубина, фасад открыт на стороне камеры):
-///   back  (Z 4..8):  Bathroom | Kitchen | Bedroom
-///   front (Z 0..4):  Hallway  |     Living
-///   Stairwell (подъезд): X -10..-6, Z 0..8, со ступенями.
+///   back  (Z 4..8):  Bedroom | Kitchen | Bathroom
+///   front (Z 0..4):  Living  |  Hallway
+///   Stairwell (подъезд): X 6..10, Z 0..8, со ступенями (справа).
 /// </summary>
 public class Scene2D5Bootstrap : MonoBehaviour
 {
@@ -17,18 +17,19 @@ public class Scene2D5Bootstrap : MonoBehaviour
     [SerializeField] Material floorMaterialWood;
     [SerializeField] Material floorMaterialTile;
     [SerializeField] Material wallMaterial;
-    [SerializeField] Material doorMaterial;
+
+    [Header("Prefabs")]
+    [SerializeField] GameObject doorPrefab;
 
     [Header("Dimensions")]
     [SerializeField] float floorHeight = 3f;
     [SerializeField] float wallThickness = 0.2f;
     [SerializeField] float doorWidth = 1.2f;
-    [SerializeField] float doorThickness = 0.1f;
 
     Transform doorsRoot;
 
     [Header("Isometric camera preset")]
-    [SerializeField] Vector3 cameraLookAt = new(-1f, 1.5f, 4f);
+    [SerializeField] Vector3 cameraLookAt = new(1f, 1.5f, 4f);
     [SerializeField] float isometricPitch = 35f;
     [SerializeField] float isometricYaw = -45f;
     [SerializeField] float cameraDistance = 28f;
@@ -97,8 +98,8 @@ public class Scene2D5Bootstrap : MonoBehaviour
         if (wallMaterial == null)
             wallMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/RoomWall.mat");
 
-        if (doorMaterial == null)
-            doorMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/RoomDoor.mat");
+        if (doorPrefab == null)
+            doorPrefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Door.prefab");
 #endif
     }
 
@@ -128,19 +129,19 @@ public class Scene2D5Bootstrap : MonoBehaviour
     void BuildFloors(Transform root)
     {
         var hallway = CreateGroup(root, "Hallway");
-        BuildFloor(hallway, "Floor", -6f, -2f, 0f, 4f, floorMaterialTile);
+        BuildFloor(hallway, "Floor", 2f, 6f, 0f, 4f, floorMaterialTile);
 
         var living = CreateGroup(root, "Living");
-        BuildFloor(living, "Floor", -2f, 8f, 0f, 4f, floorMaterialWood);
+        BuildFloor(living, "Floor", -8f, 2f, 0f, 4f, floorMaterialWood);
 
         var bathroom = CreateGroup(root, "Bathroom");
-        BuildFloor(bathroom, "Floor", -6f, -2f, 4f, 8f, floorMaterialTile);
+        BuildFloor(bathroom, "Floor", 2f, 6f, 4f, 8f, floorMaterialTile);
 
         var kitchen = CreateGroup(root, "Kitchen");
-        BuildFloor(kitchen, "Floor", -2f, 2.5f, 4f, 8f, floorMaterialTile);
+        BuildFloor(kitchen, "Floor", -2.5f, 2f, 4f, 8f, floorMaterialTile);
 
         var bedroom = CreateGroup(root, "Bedroom");
-        BuildFloor(bedroom, "Floor", 2.5f, 8f, 4f, 8f, floorMaterialWood);
+        BuildFloor(bedroom, "Floor", -8f, -2.5f, 4f, 8f, floorMaterialWood);
     }
 
     void BuildOuterWalls(Transform root)
@@ -148,13 +149,13 @@ public class Scene2D5Bootstrap : MonoBehaviour
         var shell = CreateGroup(root, "Walls_Outer");
 
         // Задняя стена (дальняя от камеры), общая для квартиры и подъезда.
-        BuildWallX(shell, "BackWall", 8f, -10f, 8f);
+        BuildWallX(shell, "BackWall", 8f, -8f, 10f);
 
-        // Левая внешняя стена (дальняя), вдоль подъезда.
-        BuildWallZ(shell, "LeftWall", -10f, 0f, 8f);
+        // Внешняя стена со стороны подъезда (теперь справа).
+        BuildWallZ(shell, "LeftWall", 10f, 0f, 8f);
 
         // Стена между подъездом и квартирой с дверью в прихожую.
-        BuildWallZ(shell, "Wall_Entrance", -6f, 0f, 8f, 2f);
+        BuildWallZ(shell, "Wall_Entrance", 6f, 0f, 8f, 2f);
     }
 
     void BuildPartitions(Transform root)
@@ -162,17 +163,17 @@ public class Scene2D5Bootstrap : MonoBehaviour
         var inner = CreateGroup(root, "Walls_Inner");
 
         // Прихожая | Гостиная
-        BuildWallZ(inner, "Wall_Hall_Living", -2f, 0f, 4f, 2f);
+        BuildWallZ(inner, "Wall_Hall_Living", 2f, 0f, 4f, 2f);
         // Прихожая | Ванная
-        BuildWallX(inner, "Wall_Hall_Bath", 4f, -6f, -2f, -4f);
+        BuildWallX(inner, "Wall_Hall_Bath", 4f, 2f, 6f, 4f);
         // Гостиная | Кухня
-        BuildWallX(inner, "Wall_Living_Kitchen", 4f, -2f, 2.5f, 0.25f);
+        BuildWallX(inner, "Wall_Living_Kitchen", 4f, -2.5f, 2f, -0.25f);
         // Гостиная | Спальня
-        BuildWallX(inner, "Wall_Living_Bedroom", 4f, 2.5f, 8f, 5.25f);
+        BuildWallX(inner, "Wall_Living_Bedroom", 4f, -8f, -2.5f, -5.25f);
         // Ванная | Кухня
-        BuildWallZ(inner, "Wall_Bath_Kitchen", -2f, 4f, 8f, 6f);
+        BuildWallZ(inner, "Wall_Bath_Kitchen", 2f, 4f, 8f, 6f);
         // Кухня | Спальня
-        BuildWallZ(inner, "Wall_Kitchen_Bedroom", 2.5f, 4f, 8f, 6f);
+        BuildWallZ(inner, "Wall_Kitchen_Bedroom", -2.5f, 4f, 8f, 6f);
     }
 
     void BuildStairwell(Transform root)
@@ -181,7 +182,7 @@ public class Scene2D5Bootstrap : MonoBehaviour
 
         // Площадка подъезда на уровне квартиры (передняя часть).
         CreatePart(stairwell, "Floor",
-            new Vector3(-8f, -wallThickness * 0.5f, 2.27f),
+            new Vector3(8f, -wallThickness * 0.5f, 2.27f),
             new Vector3(4f, wallThickness, 4.51f),
             floorMaterialTile);
 
@@ -192,7 +193,7 @@ public class Scene2D5Bootstrap : MonoBehaviour
         const float pitFloorY = -2.74f;
         const float riser = 0.5f;
         var stepWidth = 5f;
-        var stepX = -8f;
+        var stepX = 8f;
 
         for (var i = 0; i < steps; i++)
         {
@@ -231,11 +232,8 @@ public class Scene2D5Bootstrap : MonoBehaviour
                 new Vector3(xMax - b0, floorHeight, wallThickness),
                 wallMaterial);
 
-        // Петля (корень с Door) у края проёма; полотно смещено вдоль +X.
-        CreateDoor(name + "_Door",
-            new Vector3(a1, 0f, z),
-            new Vector3(doorWidth, floorHeight, doorThickness),
-            new Vector3(doorWidth * 0.5f, floorHeight * 0.5f, 0f));
+        // Префаб двери ориентирован под стену вдоль Z; поворот на 90° по Y разворачивает его под стену вдоль X.
+        CreateDoor(name + "_Door", new Vector3(a1, 0f, z), Quaternion.Euler(0f, 90f, 0f));
     }
 
     // Стена вдоль оси Z (фиксированный X). Необязательный дверной проём по Z.
@@ -265,31 +263,32 @@ public class Scene2D5Bootstrap : MonoBehaviour
                 new Vector3(wallThickness, floorHeight, zMax - b0),
                 wallMaterial);
 
-        // Петля (корень с Door) у края проёма; полотно смещено вдоль +Z.
-        CreateDoor(name + "_Door",
-            new Vector3(x, 0f, a1),
-            new Vector3(doorThickness, floorHeight, doorWidth),
-            new Vector3(0f, floorHeight * 0.5f, doorWidth * 0.5f));
+        // Префаб двери уже ориентирован под стену вдоль Z (петля у края проёма, полотно вдоль +Z).
+        CreateDoor(name + "_Door", new Vector3(x, 0f, a1), Quaternion.identity);
     }
 
-    // Дверь: корневой объект-петля (с Door) у края проёма + дочернее полотно со смещением.
-    // Door вращает только корень, поэтому перемещение корня сохраняет точку вращения и высоту.
-    void CreateDoor(string name, Vector3 hingeLocalPos, Vector3 panelSize, Vector3 panelOffset)
+    // Дверь — экземпляр Door.prefab (петля-корень с Door + полотно Panel).
+    // Корень ставим у края проёма; поворот задаёт ориентацию (стена вдоль Z — identity, вдоль X — 90° по Y).
+    void CreateDoor(string name, Vector3 hingeLocalPos, Quaternion localRotation)
     {
-        var hinge = new GameObject(name);
-        hinge.transform.SetParent(doorsRoot);
-        hinge.transform.localPosition = hingeLocalPos;
-        hinge.transform.localRotation = Quaternion.identity;
-        hinge.transform.localScale = Vector3.one;
-        hinge.AddComponent<Door>();
+        if (doorPrefab == null)
+        {
+            Debug.LogWarning("Door.prefab не назначен — двери не созданы.");
+            return;
+        }
 
-        var panel = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        panel.name = "Panel";
-        panel.transform.SetParent(hinge.transform);
-        panel.transform.localPosition = panelOffset;
-        panel.transform.localScale = panelSize;
-        if (doorMaterial != null)
-            panel.GetComponent<Renderer>().sharedMaterial = doorMaterial;
+        GameObject instance = null;
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+            instance = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(doorPrefab, doorsRoot);
+#endif
+        if (instance == null)
+            instance = Instantiate(doorPrefab, doorsRoot);
+
+        instance.name = name;
+        instance.transform.localPosition = hingeLocalPos;
+        instance.transform.localRotation = localRotation;
+        instance.transform.localScale = Vector3.one;
     }
 
     void BuildFloor(Transform parent, string name, float xMin, float xMax, float zMin, float zMax, Material material)
