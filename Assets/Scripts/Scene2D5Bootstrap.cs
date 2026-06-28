@@ -149,8 +149,11 @@ public class Scene2D5Bootstrap : MonoBehaviour
         BuildWallX(shell, "FrontPitWall", 0.03f, -8f, 10f, TallWall, -1f);
         BuildWallZ(shell, "RightPitWall", 10f, 0f, 8f, TallWall, -1.1f);
 
-        // Низкая стена между подъездом и квартирой с дверью в прихожую.
-        BuildWallZ(shell, "Wall_Entrance", 6f, 0f, 8f, LowWall, 0f, 2f);
+        // Вход переработан вручную: длинная нижняя секция (высота 3.54) уходит в приямок,
+        // короткая верхняя — низкая, дверь смещена к дальней (задней) стороне.
+        BuildWallZ(shell, "Wall_Entrance_B", 6f, -0.0159f, 5.5596f, 3.54f, -1.25f);
+        BuildWallZ(shell, "Wall_Entrance_A", 6f, 6.4317f, 8.0074f, LowWall, 0f);
+        CreateDoor("Wall_Entrance_Door", new Vector3(6f * layoutScale, 0f, 5.5705f * layoutScale), Quaternion.identity);
     }
 
     void BuildPartitions(Transform root)
@@ -166,8 +169,7 @@ public class Scene2D5Bootstrap : MonoBehaviour
         BuildWallX(inner, "Wall_Living_Kitchen", 4f, -2.5f, 2f, LowWall, 0f, -0.25f);
         // Гостиная | Спальня
         BuildWallX(inner, "Wall_Living_Bedroom", 4f, -8f, -2.5f, LowWall, 0f, -5.25f);
-        // Ванная | Кухня
-        BuildWallZ(inner, "Wall_Bath_Kitchen", 2f, 4f, 8f, LowWall, 0f, 6f);
+        // Стена «Ванная | Кухня» удалена вручную — проём открыт.
         // Кухня | Спальня
         BuildWallZ(inner, "Wall_Kitchen_Bedroom", -2.5f, 4f, 8f, LowWall, 0f, 6f);
     }
@@ -187,7 +189,7 @@ public class Scene2D5Bootstrap : MonoBehaviour
         const int steps = 6;
         const float stepDepth = 0.55f;
         const float startZ = 7.2f;
-        const float pitFloorY = -2.74f;
+        const float pitFloorY = -2.95f;
         const float riser = 0.5f;
         var stepWidth = 3.73f;
         var stepX = 8f;
