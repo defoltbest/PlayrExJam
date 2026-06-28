@@ -24,6 +24,17 @@ public class PlayerController : MonoBehaviour
     {
         _mainCamera = Camera.main;
         _targetPosition = transform.position;
+
+        // Rigidbody для корректной работы OnTriggerEnter (требуется физическим движком)
+        if (GetComponent<Rigidbody>() == null)
+        {
+            var rb = gameObject.AddComponent<Rigidbody>();
+            rb.isKinematic = true;
+        }
+
+        // Тег Player для распознавания дверьми
+        if (!CompareTag("Player"))
+            gameObject.tag = "Player";
     }
 
     private void Update()

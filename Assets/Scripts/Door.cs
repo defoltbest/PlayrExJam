@@ -13,6 +13,9 @@ public class Door : MonoBehaviour
     [SerializeField] float openSpeed = 320f;
     [SerializeField] bool isOpen;
 
+    [Header("Auto‑open")]
+    [SerializeField] string playerTag = "Player";
+
     Quaternion closedRotation;
     float angle;
 
@@ -21,6 +24,25 @@ public class Door : MonoBehaviour
         closedRotation = transform.localRotation;
         angle = isOpen ? openAngle : 0f;
         ApplyAngle();
+    }
+
+    void Start()
+    {
+        var col = GetComponent<Collider>();
+        if (col == null || !col.isTrigger)
+            Debug.LogWarning($"Door on {name} needs a Trigger Collider to auto‑open.", this);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag(playerTag))
+            SetOpen(true);
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag(playerTag))
+            SetOpen(false);
     }
 
     public void Toggle() => isOpen = !isOpen;
