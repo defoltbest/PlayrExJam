@@ -1,11 +1,10 @@
 using UnityEngine;
 
 /// <summary>
-/// Дверь на вертикальной петле. Компонент висит на корневом объекте двери,
-/// начало координат которого находится у края проёма (петля), а полотно — дочерний
-/// объект со смещением. Door меняет ТОЛЬКО поворот (позицию не трогает вовсе),
-/// поэтому дверь не может «провалиться» или «крутиться по центру»:
-/// она всегда распахивается вокруг своей петли. Перемещайте корневой объект — петля едет с ним.
+/// Дверь на вертикальной петле. Триггер обнаружения игрока висит на отдельном
+/// НЕвращающемся дочернем объекте (TriggerZone), поэтому зона детекции не
+/// смещается при открытии — дверь не дёргается.
+/// Компонент меняет ТОЛЬКО поворот корневого объекта. Позиция не трогается.
 /// </summary>
 public class Door : MonoBehaviour
 {
@@ -13,46 +12,59 @@ public class Door : MonoBehaviour
     [SerializeField] float openSpeed = 320f;
     [SerializeField] bool isOpen;
 
-    [Header("Auto‑open")]
+    [Header("Trigger")]
     [SerializeField] string playerTag = "Player";
+    [SerializeField] Collider triggerZone; // ссылка на НЕвращающийся дочерний коллайдер
 
     Quaternion closedRotation;
     float angle;
+    bool playerInside;
 
     void Awake()
     {
         closedRotation = transform.localRotation;
         angle = isOpen ? openAngle : 0f;
         ApplyAngle();
+
+        if (triggerZone == null)
+        {
+            // Автопоиск дочернего объекта с Collider.isTrigger
+            foreach (var c in GetComponentsInChildren<Collider>())
+            {
+                if (c.isTrigger && c.transform != transform)
+                {
+                    triggerZone = c;
+                    break;
+                }
+            }
+        }
+
+        if (triggerZone == null)
+        {
+            Debug.LogError(
+                $"Door '{name}': укажите в инспекторе triggerZone — невращающийся дочерний коллайдер с isTrigger=true.\n" +
+                $"Создайте пустой дочерний объект (напр. 'TriggerZone'), добавьте BoxCollider (isTrigger), " +
+                $"разместите его в районе петли. Он НЕ должен вращаться вместе с дверью.",
+                this);
+        }
+        else if (!triggerZone.isTrigger)
+        {
+            Debug.LogWarning($"Door '{name}': triggerZone должен быть isTrigger=true.", this);
+        }
     }
 
-    void Start()
-    {
-        var col = GetComponent<Collider>();
-        if (col == null || !col.isTrigger)
-            Debug.LogWarning($"Door on {name} needs a Trigger Collider to auto‑open.", this);
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag(playerTag))
-            SetOpen(true);
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag(playerTag))
-            SetOpen(false);
-    }
-
-    public void Toggle() => isOpen = !isOpen;
-
-    public void SetOpen(bool value) => isOpen = value;
-
-    public bool IsOpen => isOpen;
+    // События ловятся на triggerZone через родительский MonoBehaviour —
+    // Unity вызывает их на объекте с Rigidbody или на любом компоненте родителя.
+    // Если triggerZone — дочерний, события всплывают к Door (при наличии Rigidbody на корне).
+    // Поэтому используем ручную проверку в Update через bounds.
 
     void Update()
     {
+        if (triggerZone != null)
+            playerInside = CheckPlayerInTrigger();
+
+        SetOpen(playerInside);
+
         var target = isOpen ? openAngle : 0f;
         if (Mathf.Approximately(angle, target))
             return;
@@ -61,8 +73,31 @@ public class Door : MonoBehaviour
         ApplyAngle();
     }
 
+    bool CheckPlayerInTrigger()
+    {
+        var bounds = triggerZone.bounds;
+        // Простой поиск игрока по тегу в пределах bounds триггера
+        var player = GameObject.FindGameObjectWithTag(playerTag);
+        if (player == null) return false;
+
+        var playerCol = player.GetComponent<Collider>();
+        if (playerCol != null)
+            return bounds.Intersects(playerCol.bounds);
+        return bounds.Contains(player.transform.position);
+    }
+
     void ApplyAngle()
     {
         transform.localRotation = closedRotation * Quaternion.Euler(0f, angle, 0f);
+
+        // Компенсируем вращение родителя для triggerZone — он всегда смотрит в исходном направлении
+        if (triggerZone != null)
+            triggerZone.transform.localRotation = Quaternion.Inverse(Quaternion.Euler(0f, angle, 0f));
     }
+
+    public void Toggle() => isOpen = !isOpen;
+
+    public void SetOpen(bool value) => isOpen = value;
+
+    public bool IsOpen => isOpen;
 }
