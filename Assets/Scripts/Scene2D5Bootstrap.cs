@@ -46,21 +46,6 @@ public class Scene2D5Bootstrap : MonoBehaviour
         var root = GetOrCreateHouseRoot();
         ClearHouseChildren(root);
         BuildApartment(root);
-        EnsureDoorClicker();
-    }
-
-    void EnsureDoorClicker()
-    {
-        var camera = Camera.main;
-        if (camera == null)
-            return;
-
-        if (!camera.TryGetComponent(out DoorClickController _))
-            camera.gameObject.AddComponent<DoorClickController>();
-
-#if UNITY_EDITOR
-        UnityEditor.EditorUtility.SetDirty(camera.gameObject);
-#endif
     }
 
     [ContextMenu("Apply Isometric Camera Preset")]
@@ -83,7 +68,6 @@ public class Scene2D5Bootstrap : MonoBehaviour
             staticCamera = camera.gameObject.AddComponent<StaticCamera2D5>();
 
         staticCamera.SyncFromTransform();
-        EnsureDoorClicker();
 
 #if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(camera.gameObject);
