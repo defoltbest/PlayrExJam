@@ -55,6 +55,7 @@ public class GameBootstrap : MonoBehaviour
         };
 
         player.AddComponent<PlayerController>();
+        player.AddComponent<PlayerInventory>();
     }
 
     private void SetupCamera()
