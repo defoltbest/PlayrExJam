@@ -142,6 +142,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
   items: []
+  inventoryPanel: {fileID: 0}
+  itemPrefab: {fileID: 0}
+  itemSprites: []
 --- !u!1 &9043680255372837421
 GameObject:
   m_ObjectHideFlags: 0
