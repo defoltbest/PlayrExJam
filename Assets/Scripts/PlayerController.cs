@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer = -1;
     [SerializeField] private float raycastDistance = 100f;
 
+    [Header("Animation")]
+    [SerializeField] private Animator _animator;
+
     private NavMeshAgent _agent;
     private Camera _mainCamera;
     private Rigidbody _rb;
@@ -42,6 +45,10 @@ public class PlayerController : MonoBehaviour
         _agent.speed = moveSpeed;
         _agent.updateRotation = false; // Мы вращаем сами в FaceDirection
 
+        // Поиск Animator на дочернем объекте Character
+        if (_animator == null)
+            _animator = GetComponentInChildren<Animator>();
+
         // Тег Player для распознавания дверьми
         if (!CompareTag("Player"))
             gameObject.tag = "Player";
@@ -52,20 +59,33 @@ public class PlayerController : MonoBehaviour
         if (_mainCamera == null)
             _mainCamera = Camera.main;
 
+        bool isMoving = false;
+
         // Клавиатура имеет приоритет: при ручном управлении отменяем путь.
         if (HandleKeyboard())
         {
             if (_agent.hasPath)
                 _agent.ResetPath();
-            return;
+            isMoving = true;
         }
-
-        HandleClick();
-
-        if (_agent.hasPath && _agent.velocity.sqrMagnitude > 0.01f)
+        else
         {
-            FaceDirection(_agent.velocity.normalized);
+            HandleClick();
+
+            if (_agent.hasPath && _agent.velocity.sqrMagnitude > 0.01f)
+            {
+                FaceDirection(_agent.velocity.normalized);
+                isMoving = true;
+            }
         }
+
+        UpdateAnimator(isMoving);
+    }
+
+    private void UpdateAnimator(bool isMoving)
+    {
+        if (_animator != null)
+            _animator.SetBool("IsWalking", isMoving);
     }
 
     private bool HandleKeyboard()
