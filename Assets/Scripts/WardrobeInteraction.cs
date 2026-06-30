@@ -30,10 +30,13 @@ public class WardrobeInteraction : MonoBehaviour
     private bool _isHidden;
 
     private Camera _mainCamera;
+    private CameraFollow _cameraFollow;
 
     private void Start()
     {
         _mainCamera = Camera.main;
+        if (_mainCamera != null)
+            _cameraFollow = _mainCamera.GetComponent<CameraFollow>();
 
         if (interactionZone == null)
         {
@@ -99,6 +102,7 @@ public class WardrobeInteraction : MonoBehaviour
         _playerController.enabled = false;
         if (_playerRenderer != null) _playerRenderer.enabled = false;
         if (_playerCollider != null) _playerCollider.enabled = false;
+        if (_cameraFollow != null) _cameraFollow.enabled = false;
 
         _isHidden = true;
 
@@ -116,6 +120,7 @@ public class WardrobeInteraction : MonoBehaviour
         _playerController.enabled = true;
         if (_playerRenderer != null) _playerRenderer.enabled = true;
         if (_playerCollider != null) _playerCollider.enabled = true;
+        if (_cameraFollow != null) _cameraFollow.enabled = true;
 
         _isHidden = false;
 
