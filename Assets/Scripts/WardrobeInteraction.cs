@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using TMPro;
 
@@ -97,11 +98,17 @@ public class WardrobeInteraction : MonoBehaviour
         if (_player == null) return;
 
         _returnPosition = _player.position;
+
+        // Отключаем ВСЕ коллайдеры и NavMeshAgent ПЕРЕД телепортацией,
+        // чтобы физика не блокировала перемещение модели внутрь шкафа.
+        DisableAllPlayerColliders();
+        var agent = _player.GetComponent<NavMeshAgent>();
+        if (agent != null) agent.enabled = false;
+
         _player.position = hidePosition != null ? hidePosition.position : transform.position;
 
         _playerController.enabled = false;
         if (_playerRenderer != null) _playerRenderer.enabled = false;
-        if (_playerCollider != null) _playerCollider.enabled = false;
         if (_cameraFollow != null) _cameraFollow.enabled = false;
 
         _isHidden = true;
@@ -119,8 +126,12 @@ public class WardrobeInteraction : MonoBehaviour
 
         _playerController.enabled = true;
         if (_playerRenderer != null) _playerRenderer.enabled = true;
-        if (_playerCollider != null) _playerCollider.enabled = true;
         if (_cameraFollow != null) _cameraFollow.enabled = true;
+
+        // Возвращаем коллайдеры и NavMeshAgent ПОСЛЕ телепортации наружу.
+        EnableAllPlayerColliders();
+        var agent = _player.GetComponent<NavMeshAgent>();
+        if (agent != null) agent.enabled = true;
 
         _isHidden = false;
 
@@ -165,5 +176,19 @@ public class WardrobeInteraction : MonoBehaviour
         {
             tooltipText.text = _isHidden ? exitPrompt : hidePrompt;
         }
+    }
+
+    private void DisableAllPlayerColliders()
+    {
+        var colliders = _player.GetComponentsInChildren<Collider>();
+        foreach (var col in colliders)
+            col.enabled = false;
+    }
+
+    private void EnableAllPlayerColliders()
+    {
+        var colliders = _player.GetComponentsInChildren<Collider>();
+        foreach (var col in colliders)
+            col.enabled = true;
     }
 }
