@@ -16,6 +16,7 @@ public class TimerController : MonoBehaviour
     [Header("Game Over")]
     [SerializeField] private GameObject gameOverMenu;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private NeighborController neighborController;
 
     [Header("UI")]
     [SerializeField] private TMP_Text textTimer;                // ссылка на TMP_Text для отображения
@@ -108,6 +109,12 @@ public class TimerController : MonoBehaviour
         if (playerController != null)
         {
             playerController.enabled = false;
+        }
+
+        // Отключить управление соседа
+        if (neighborController != null)
+        {
+            neighborController.enabled = false;
         }
     }
 

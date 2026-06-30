@@ -12,6 +12,11 @@ public class ExitMenuController : MonoBehaviour
     [SerializeField] private Button buttonContinue;
     [SerializeField] private Button buttonExit;
 
+    [Header("Pause References")]
+    [SerializeField] private TimerController timerController;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private NeighborController neighborController;
+
     void Start()
     {
         if (backgroundExit != null)
@@ -31,6 +36,18 @@ public class ExitMenuController : MonoBehaviour
     {
         if (backgroundExit != null)
             backgroundExit.SetActive(true);
+
+        // Поставить игру на паузу
+        if (timerController != null)
+            timerController.Pause();
+
+        if (playerController != null)
+            playerController.enabled = false;
+
+        if (neighborController != null)
+            neighborController.enabled = false;
+
+        Time.timeScale = 0f;
     }
 
     private void OnContinueClicked()
@@ -48,5 +65,17 @@ public class ExitMenuController : MonoBehaviour
         // Возврат на сцену (скрываем меню)
         if (backgroundExit != null)
             backgroundExit.SetActive(false);
+
+        // Продолжить игру
+        Time.timeScale = 1f;
+
+        if (timerController != null)
+            timerController.Play();
+
+        if (playerController != null)
+            playerController.enabled = true;
+
+        if (neighborController != null)
+            neighborController.enabled = true;
     }
 }
