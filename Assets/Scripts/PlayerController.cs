@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.AI;
 
 /// <summary>
 /// Управление персонажем через новый Input System:
@@ -16,15 +17,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer = -1;
     [SerializeField] private float raycastDistance = 100f;
 
-    private Vector3 _targetPosition;
-    private bool _hasTarget;
+    private NavMeshAgent _agent;
     private Camera _mainCamera;
     private Rigidbody _rb;
 
     private void Awake()
     {
         _mainCamera = Camera.main;
-        _targetPosition = transform.position;
 
         // Rigidbody для корректной работы OnTriggerEnter (требуется физическим движком)
         _rb = GetComponent<Rigidbody>();
@@ -33,6 +32,15 @@ public class PlayerController : MonoBehaviour
             _rb = gameObject.AddComponent<Rigidbody>();
             _rb.isKinematic = true;
         }
+
+        _agent = GetComponent<NavMeshAgent>();
+        if (_agent == null)
+        {
+            _agent = gameObject.AddComponent<NavMeshAgent>();
+        }
+        
+        _agent.speed = moveSpeed;
+        _agent.updateRotation = false; // Мы вращаем сами в FaceDirection
 
         // Тег Player для распознавания дверьми
         if (!CompareTag("Player"))
@@ -44,12 +52,20 @@ public class PlayerController : MonoBehaviour
         if (_mainCamera == null)
             _mainCamera = Camera.main;
 
-        // Клавиатура имеет приоритет: при ручном управлении отменяем клик-цель.
+        // Клавиатура имеет приоритет: при ручном управлении отменяем путь.
         if (HandleKeyboard())
+        {
+            if (_agent.hasPath)
+                _agent.ResetPath();
             return;
+        }
 
         HandleClick();
-        MoveTowardsTarget();
+
+        if (_agent.hasPath && _agent.velocity.sqrMagnitude > 0.01f)
+        {
+            FaceDirection(_agent.velocity.normalized);
+        }
     }
 
     private bool HandleKeyboard()
@@ -71,9 +87,8 @@ public class PlayerController : MonoBehaviour
         var right = PlanarAxis(_mainCamera != null ? _mainCamera.transform.right : Vector3.right);
         var direction = (forward * input.y + right * input.x).normalized;
 
-        _rb.MovePosition(_rb.position + direction * (moveSpeed * Time.deltaTime));
+        _agent.Move(direction * (moveSpeed * Time.deltaTime));
         FaceDirection(direction);
-        _hasTarget = false;
         return true;
     }
 
@@ -90,30 +105,7 @@ public class PlayerController : MonoBehaviour
         if (!Physics.Raycast(ray, out var hit, raycastDistance, groundLayer))
             return;
 
-        _targetPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-        _hasTarget = true;
-    }
-
-    private void MoveTowardsTarget()
-    {
-        if (!_hasTarget) return;
-
-        var direction = _targetPosition - transform.position;
-        var distance = direction.magnitude;
-
-        if (distance < 0.05f)
-        {
-            _rb.MovePosition(_targetPosition);
-            _hasTarget = false;
-            return;
-        }
-
-        var moveStep = direction.normalized * (moveSpeed * Time.deltaTime);
-        if (moveStep.magnitude > distance)
-            moveStep = direction;
-
-        _rb.MovePosition(_rb.position + moveStep);
-        FaceDirection(direction);
+        _agent.SetDestination(hit.point);
     }
 
     private void FaceDirection(Vector3 direction)
