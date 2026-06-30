@@ -13,7 +13,7 @@ public class Door : MonoBehaviour
     [SerializeField] bool isOpen;
 
     [Header("Trigger")]
-    [SerializeField] string playerTag = "Player";
+    [SerializeField] string[] triggerTags = { "Player", "Neighbor" };
     [SerializeField] Collider triggerZone; // ссылка на НЕвращающийся дочерний коллайдер
 
     Quaternion closedRotation;
@@ -76,14 +76,20 @@ public class Door : MonoBehaviour
     bool CheckPlayerInTrigger()
     {
         var bounds = triggerZone.bounds;
-        // Простой поиск игрока по тегу в пределах bounds триггера
-        var player = GameObject.FindGameObjectWithTag(playerTag);
-        if (player == null) return false;
-
-        var playerCol = player.GetComponent<Collider>();
-        if (playerCol != null)
-            return bounds.Intersects(playerCol.bounds);
-        return bounds.Contains(player.transform.position);
+        // Простой поиск сущностей по тегам в пределах bounds триггера
+        foreach (var tag in triggerTags)
+        {
+            var entities = GameObject.FindGameObjectsWithTag(tag);
+            foreach (var entity in entities)
+            {
+                var entityCol = entity.GetComponent<Collider>();
+                if (entityCol != null && bounds.Intersects(entityCol.bounds))
+                    return true;
+                if (bounds.Contains(entity.transform.position))
+                    return true;
+            }
+        }
+        return false;
     }
 
     void ApplyAngle()
