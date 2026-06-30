@@ -1415,7 +1415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7727f3fbbc9caae4c887d548618ce772, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
-  target: {fileID: 0}
+  target: {fileID: 2133614570}
   offset: {x: 4, y: 8.5, z: -9}
   smoothTime: 0
   maxSpeed: 100
@@ -2907,12 +2907,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029030a873c434549b17e193468ffdd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameBootstrap
-  groundPosition: {x: 0, y: -0.5, z: 0}
-  groundSize: {x: 20, y: 1, z: 20}
-  playerStartPosition: {x: 0, y: 0.5, z: 0}
-  playerScale: {x: 1, y: 1, z: 1}
-  cameraPosition: {x: 0, y: 15, z: -12}
-  orthographicSize: 8
 --- !u!4 &518273929
 Transform:
   m_ObjectHideFlags: 0
@@ -4014,18 +4008,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c4f2a1e9b3d4c5f6a7b8c9d0e1f2a3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floorMaterialWood: {fileID: 2100000, guid: c1d2e3f4a5b647889900112233445566, type: 2}
-  floorMaterialTile: {fileID: 2100000, guid: e1f2a3b4c5d647890011223344556677, type: 2}
-  wallMaterial: {fileID: 2100000, guid: d2e3f4a5b6c748990011223344556677, type: 2}
-  doorPrefab: {fileID: 7092831794231594195, guid: 2faecadea9f02bf46ad1d2b1ca992a38, type: 3}
-  wallThickness: 0.2
-  doorWidth: 1.2
-  layoutScale: 1.4142135
-  cameraLookAt: {x: -1, y: 1.5, z: 4}
-  isometricPitch: 35
-  isometricYaw: -45
-  cameraDistance: 28
-  orthographicSize: 11
 --- !u!1001 &901907584
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7252,6 +7234,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.3705387, y: 1.8146827, z: 0.47238588}
   m_Center: {x: -0.017502785, y: 0.40734136, z: 0.027519464}
+--- !u!4 &2133614570 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
+  m_PrefabInstance: {fileID: 2133614561}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2143581052 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8764770897818525512, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
