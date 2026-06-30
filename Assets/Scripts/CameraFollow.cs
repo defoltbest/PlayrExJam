@@ -13,19 +13,19 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Transform target;
 
     [Header("Offset")]
-    [SerializeField] private Vector3 offset = new Vector3(0f, 10f, -8f);
+    [SerializeField] private Vector3 offset;
 
     [Header("Smooth Settings")]
-    [SerializeField] private float smoothTime = 0.25f;
-    [SerializeField] private float maxSpeed = 50f;
+    [SerializeField] private float smoothTime;
+    [SerializeField] private float maxSpeed;
 
     [Header("Look At")]
-    [SerializeField] private bool lookAtTarget = true;
-    [SerializeField] private Vector3 lookAtOffset = new Vector3(0f, 1f, 0f);
+    [SerializeField] private bool lookAtTarget;
+    [SerializeField] private Vector3 lookAtOffset;
 
     private Vector3 _velocity = Vector3.zero;
     private Camera _camera;
-    [SerializeField] private bool snapOnStart = true;
+    [SerializeField] private bool snapOnStart;
 
     private void Awake()
     {
