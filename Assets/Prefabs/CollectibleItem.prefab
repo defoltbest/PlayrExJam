@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6640020984926414748}
   - component: {fileID: 7684224449552596912}
   - component: {fileID: 3164266114151983736}
+  - component: {fileID: 4781336220129559588}
   m_Layer: 0
   m_Name: CollectibleItem
   m_TagString: Untagged
@@ -145,6 +146,26 @@ MonoBehaviour:
   inventoryPanel: {fileID: 0}
   itemPrefab: {fileID: 0}
   itemSprites: []
+--- !u!114 &4781336220129559588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246150078201146667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &9043680255372837421
 GameObject:
   m_ObjectHideFlags: 0
