@@ -6905,14 +6905,27 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9000000, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
     - target: {fileID: 5866666021909216657, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 541667afce7c1db41b8713f2765154dd, type: 2}
     - target: {fileID: 5866666021909216657, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
       propertyPath: m_WarningMessage
-      value: 
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+        'mixamorig:LeftHandIndex1'\n\tTransform 'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform
+        'mixamorig:RightArm'\n\tTransform 'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tTransform
+        'mixamorig:RightHandIndex3'\n\tTransform 'mixamorig:RightFoot'\n\tand more
+        ...\n\tFrom animation clip 'Idle'\n\tFrom animation clip 'ButtonPushing'\n\tFrom
+        animation clip 'fax'\n\tFrom animation clip 'NervouslyLookAround'\n\tFrom
+        animation clip 'puttingDown'\n\tFrom animation clip 'Talking'\n\tFrom animation
+        clip 'Victory'\n\tFrom animation clip 'Walking'"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6000407479487422213, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
       propertyPath: m_LocalRotation.x
@@ -6989,7 +7002,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1
-  m_BaseOffset: 0.49999997
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &2133614566
