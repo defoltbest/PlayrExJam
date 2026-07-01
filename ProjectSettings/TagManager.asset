@@ -7,6 +7,10 @@ TagManager:
   - Door
   - Warderobe
   - Neighbor
+  - Bathroom
+  - Livingroom
+  - Hallway
+  - Kitchen
   layers:
   - Default
   - TransparentFX
