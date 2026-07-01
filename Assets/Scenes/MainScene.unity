@@ -6247,6 +6247,63 @@ PhysicsMaterial:
   m_Bounciness: 0
   m_FrictionCombine: 0
   m_BounceCombine: 0
+--- !u!1001 &1986810624
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.286925
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.099999815
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.101311
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
+      propertyPath: m_Name
+      value: T-Pose
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
 --- !u!1 &2002435120
 GameObject:
   m_ObjectHideFlags: 0
@@ -6592,21 +6649,16 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 541667afce7c1db41b8713f2765154dd, type: 2}
     - target: {fileID: 5866666021909216657, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-        'mixamorig:LeftHandIndex1'\n\tTransform 'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform
-        'mixamorig:RightArm'\n\tTransform 'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tTransform
-        'mixamorig:RightHandIndex3'\n\tTransform 'mixamorig:RightFoot'\n\tand more
-        ...\n\tFrom animation clip 'Idle'\n\tFrom animation clip 'ButtonPushing'\n\tFrom
-        animation clip 'fax'\n\tFrom animation clip 'NervouslyLookAround'\n\tFrom
-        animation clip 'puttingDown'\n\tFrom animation clip 'Talking'\n\tFrom animation
-        clip 'Victory'"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6000407479487422213, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
       propertyPath: m_LocalRotation.x
@@ -7014,3 +7066,4 @@ SceneRoots:
   - {fileID: 1083368409611183025}
   - {fileID: 364752946}
   - {fileID: 1763609839}
+  - {fileID: 1986810624}
