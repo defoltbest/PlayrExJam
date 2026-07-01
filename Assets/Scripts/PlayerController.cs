@@ -9,6 +9,12 @@ using UnityEngine.AI;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
+    /// <summary>
+    /// Тег комнаты, в которой сейчас находится игрок.
+    /// Используется соседом для проверки видимости в одной комнате.
+    /// </summary>
+    public static string CurrentRoomTag { get; private set; }
+
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 10f;
@@ -143,5 +149,24 @@ public class PlayerController : MonoBehaviour
     {
         axis.y = 0f;
         return axis.sqrMagnitude < 0.0001f ? Vector3.forward : axis.normalized;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Проверяем, является ли триггер комнатой (теги Kitchen, Hallway, Livingroom, Bathroom)
+        string tag = other.tag;
+        if (tag == "Kitchen" || tag == "Hallway" || tag == "Livingroom" || tag == "Bathroom")
+        {
+            CurrentRoomTag = tag;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        // При выходе из комнаты сбрасываем, если это была текущая комната
+        if (other.tag == CurrentRoomTag)
+        {
+            CurrentRoomTag = null;
+        }
     }
 }
