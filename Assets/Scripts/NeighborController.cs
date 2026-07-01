@@ -51,6 +51,7 @@ public class NeighborController : MonoBehaviour
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
+        _agent.updateRotation = false; // Берем управление поворотом на себя
         
         // Rigidbody для корректной работы OnTriggerEnter
         var rb = GetComponent<Rigidbody>();
@@ -96,6 +97,9 @@ public class NeighborController : MonoBehaviour
 
         if (waypoints.Count == 0 || _isWaiting)
             return;
+
+        // --- Поворот в сторону движения (угол обзора = forward) ---
+        RotateTowardsMovement();
 
         // Проверяем, дошел ли агент до цели
         // Используем небольшую погрешность (remainingDistance < 0.1), так как агент может остановиться чуть-чуть не дойдя
@@ -264,6 +268,27 @@ public class NeighborController : MonoBehaviour
 
         GoToNextWaypoint();
         _isWaiting = false;
+    }
+
+    /// <summary>
+    /// Поворачивает соседа в сторону движения (forward = направление взгляда = угол обзора).
+    /// </summary>
+    private void RotateTowardsMovement()
+    {
+        // steeringTarget — точка, к которой агент реально движется прямо сейчас
+        Vector3 targetPoint = _agent.steeringTarget;
+        Vector3 direction = (targetPoint - transform.position);
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                540f * Time.deltaTime // Быстрый, но плавный поворот
+            );
+        }
     }
 
     private void GoToNextWaypoint()

@@ -7219,6 +7219,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1724821791301491598, guid: e1553b2c118d42648a49140c01124498, type: 3}
+      propertyPath: m_Constraints
+      value: 116
+      objectReference: {fileID: 0}
     - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: visionAngle
       value: 90
@@ -7233,7 +7237,7 @@ PrefabInstance:
       objectReference: {fileID: 1735771107}
     - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: detectionDelay
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: timerController
