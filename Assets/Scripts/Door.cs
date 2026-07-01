@@ -11,19 +11,29 @@ public class Door : MonoBehaviour
     [SerializeField] float openAngle = 95f;
     [SerializeField] float openSpeed = 320f;
     [SerializeField] bool isOpen;
+    [SerializeField] Vector3 rotationAxis = Vector3.up; // Ось петли в мировых координатах (по умолчанию Y = вверх)
 
     [Header("Trigger")]
     [SerializeField] string[] triggerTags = { "Player", "Neighbor" };
     [SerializeField] Collider triggerZone; // ссылка на НЕвращающийся дочерний коллайдер
 
-    Quaternion closedRotation;
+    Quaternion closedWorldRotation;
+    Quaternion triggerZoneOriginalWorldRotation;
+    bool hasTriggerZone;
     float angle;
     bool playerInside;
 
     void Awake()
     {
-        closedRotation = transform.localRotation;
+        closedWorldRotation = transform.rotation;
         angle = isOpen ? openAngle : 0f;
+
+        if (triggerZone != null)
+        {
+            triggerZoneOriginalWorldRotation = triggerZone.transform.rotation;
+            hasTriggerZone = true;
+        }
+
         ApplyAngle();
 
         if (triggerZone == null)
@@ -94,11 +104,13 @@ public class Door : MonoBehaviour
 
     void ApplyAngle()
     {
-        transform.localRotation = closedRotation * Quaternion.Euler(0f, angle, 0f);
+        // Вращаем дверь в МИРОВОМ пространстве вокруг заданной оси (по умолчанию Vector3.up)
+        Quaternion hingeRotation = Quaternion.AngleAxis(angle, rotationAxis);
+        transform.rotation = hingeRotation * closedWorldRotation;
 
-        // Компенсируем вращение родителя для triggerZone — он всегда смотрит в исходном направлении
-        if (triggerZone != null)
-            triggerZone.transform.localRotation = Quaternion.Inverse(Quaternion.Euler(0f, angle, 0f));
+        // Триггер-зона остаётся в исходном мировом положении (не вращается вместе с дверью)
+        if (hasTriggerZone && triggerZone != null)
+            triggerZone.transform.rotation = triggerZoneOriginalWorldRotation;
     }
 
     public void Toggle() => isOpen = !isOpen;
