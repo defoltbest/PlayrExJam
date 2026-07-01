@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 
 /// <summary>
-/// Вспомогательный компонент для проброса OnTriggerEnter/Exit через события.
+/// Добавляется автоматически скриптом HideInteraction на объект-триггер.з события.
 /// Добавляется автоматически скриптом WardrobeInteraction на объект-триггер.
 /// </summary>
 public class TriggerForwarder : MonoBehaviour

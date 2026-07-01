@@ -4,14 +4,14 @@ using UnityEngine.InputSystem;
 using TMPro;
 
 /// <summary>
-/// Взаимодействие со шкафом: в зоне триггера нажать F — спрятаться / выйти.
-/// Вешается на объект Wardrobe.
+/// Универсальное взаимодействие: в зоне триггера нажать F — спрятаться / выйти.
+/// Вешается на любой объект, за которым можно спрятаться (шкаф, коробка, стена и т.д.).
 /// </summary>
-public class WardrobeInteraction : MonoBehaviour
+public class HideInteraction : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Collider interactionZone;   // WardrobeCollaider (isTrigger = true)
-    [SerializeField] private Transform hidePosition;      // точка внутри шкафа, куда телепортируется игрок
+    [SerializeField] private Collider interactionZone;   // триггер-зона (isTrigger = true)
+    [SerializeField] private Transform hidePosition;      // точка, куда телепортируется игрок
 
     [Header("UI")]
     [SerializeField] private GameObject tooltip;          // подсказка (опционально)
@@ -41,7 +41,7 @@ public class WardrobeInteraction : MonoBehaviour
 
         if (interactionZone == null)
         {
-            Debug.LogError("[WardrobeInteraction] interactionZone не назначен!", this);
+            Debug.LogError("[HideInteraction] interactionZone не назначен!", this);
             return;
         }
 
@@ -100,7 +100,7 @@ public class WardrobeInteraction : MonoBehaviour
         _returnPosition = _player.position;
 
         // Отключаем ВСЕ коллайдеры и NavMeshAgent ПЕРЕД телепортацией,
-        // чтобы физика не блокировала перемещение модели внутрь шкафа.
+        // чтобы физика не блокировала перемещение модели внутрь объекта.
         DisableAllPlayerColliders();
         var agent = _player.GetComponent<NavMeshAgent>();
         if (agent != null) agent.enabled = false;
