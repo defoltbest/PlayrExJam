@@ -50,8 +50,11 @@ public class NeighborController : MonoBehaviour
     [SerializeField] private float pursuitSpeed = 4f;
     [Tooltip("Скорость поворота при преследовании игрока")]
     [SerializeField] private float pursuitRotationSpeed = 720f;
+    [Tooltip("Время ожидания на месте после потери игрока из вида, перед возвратом на маршрут")]
+    [SerializeField] private float waitTimeAfterLosingPlayer = 2f;
 
     private bool _isPursuing = false;
+    private bool _isWaitingAfterLosingPlayer = false;
     private float _patrolSpeed;
 
     [Header("Game Over")]
@@ -220,13 +223,13 @@ public class NeighborController : MonoBehaviour
             _agent.speed = pursuitSpeed;
             _agent.autoBraking = false; // не тормозить при приближении — гонимся до упора
         }
-        else if (!_playerDetected && _isPursuing)
+        else if (!_playerDetected && _isPursuing && !_isWaitingAfterLosingPlayer)
         {
-            // --- ПРЕКРАТИТЬ ПРЕСЛЕДОВАНИЕ, ВЕРНУТЬСЯ К ПАТРУЛЮ ---
+            // --- ИГРОК ПОТЕРЯН: СТОЯТЬ НА МЕСТЕ И ЖДАТЬ ---
             _isPursuing = false;
-            _agent.speed = _patrolSpeed;
+            _agent.isStopped = true;
             _agent.autoBraking = true;
-            GoToNextWaypoint(); // продолжить с текущей точки маршрута
+            StartCoroutine(WaitBeforeReturnToPatrol());
         }
 
         if (_isPursuing)
@@ -357,6 +360,21 @@ public class NeighborController : MonoBehaviour
                 540f * Time.deltaTime // Быстрый, но плавный поворот
             );
         }
+    }
+
+    private IEnumerator WaitBeforeReturnToPatrol()
+    {
+        _isWaitingAfterLosingPlayer = true;
+
+        if (waitTimeAfterLosingPlayer > 0)
+        {
+            yield return new WaitForSeconds(waitTimeAfterLosingPlayer);
+        }
+
+        _isWaitingAfterLosingPlayer = false;
+        _agent.isStopped = false;
+        _agent.speed = _patrolSpeed;
+        GoToNextWaypoint();
     }
 
     private void GoToNextWaypoint()

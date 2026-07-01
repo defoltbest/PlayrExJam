@@ -7202,10 +7202,21 @@ PrefabInstance:
     - target: {fileID: 518867848009511567, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9000000, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
     - target: {fileID: 518867848009511567, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: m_WarningMessage
-      value: 
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+        'mixamorig:LeftHandIndex1'\n\tTransform 'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform
+        'mixamorig:RightArm'\n\tTransform 'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tTransform
+        'mixamorig:RightHandIndex3'\n\tTransform 'mixamorig:RightFoot'\n\tand more
+        ...\n\tFrom animation clip 'BreathingIdle'\n\tFrom animation clip 'AngryPoint'\n\tFrom
+        animation clip 'Drinking'\n\tFrom animation clip 'LookingAround'\n\tFrom
+        animation clip 'SittingDrinking'\n\tFrom animation clip 'SittingIdle'\n\tFrom
+        animation clip 'SittingLaughing'\n\tFrom animation clip 'SittingYell'\n\tFrom
+        animation clip 'SitToStand'\n\tFrom animation clip 'StandToSit'\n\tand more
+        ..."
       objectReference: {fileID: 0}
     - target: {fileID: 518867848009511567, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: m_ApplyRootMotion
@@ -7254,6 +7265,10 @@ PrefabInstance:
     - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: visionObstacleMask.m_Bits
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
+      propertyPath: waitTimeAfterLosingPlayer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: waypoints.Array.data[0].point
