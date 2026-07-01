@@ -326,6 +326,7 @@ Transform:
   - {fileID: 5817705204196759926}
   - {fileID: 1004435267298563201}
   - {fileID: 856264068738849239}
+  - {fileID: 3412478032017627085}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3458131530475108563
@@ -341,7 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WardrobeInteraction
   interactionZone: {fileID: 8150181966763782456}
-  hidePosition: {fileID: 1004435267298563201}
+  hidePosition: {fileID: 3412478032017627085}
   tooltip: {fileID: 3363035433566523681}
   tooltipText: {fileID: 5715683017656325623}
   hidePrompt: "\u041D\u0430\u0436\u043C\u0438\u0442\u0435 F, \u0447\u0442\u043E\u0431\u044B
@@ -372,12 +373,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7773467588092767164}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.059, z: 0.84}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: -0.099999905, y: 0.8399999, z: 0.8589997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5817705204196759926}
+  m_Father: {fileID: 5288599601330312331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6284242706422808221
 PrefabInstance:
@@ -445,10 +446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4ed7ee6e2d7c7d54aa338256cfe595c8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3412478032017627085}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4ed7ee6e2d7c7d54aa338256cfe595c8, type: 3}
       insertIndex: -1
