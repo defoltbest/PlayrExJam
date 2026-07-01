@@ -42,6 +42,7 @@ public class NeighborController : MonoBehaviour
     private float _detectionTimer;
     private Transform _playerTransform;
     private bool _playerDetected;
+    private bool _playerSeenBeforeHiding;
     private bool _isGameOver = false;
 
     // --- Преследование ---
@@ -167,40 +168,80 @@ public class NeighborController : MonoBehaviour
         {
             _detectionTimer = 0f;
             _playerDetected = false;
+            _playerSeenBeforeHiding = false; // игрок ушёл в другую комнату — сосед забывает
             return;
         }
 
-        // --- УСЛОВИЕ 2: Игрок в радиусе обзора? ---
+        // Вычисляем направление и дистанцию до игрока (нужно и для укрытия, и для обычного обзора)
         Vector3 directionToPlayer = _playerTransform.position - transform.position;
         directionToPlayer.y = 0f;
         float distance = directionToPlayer.magnitude;
+        float angle = Vector3.Angle(transform.forward, directionToPlayer.normalized);
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
 
+        // --- ЛОГИКА УКРЫТИЯ ---
+        // Игрок спрятан — проверяем, находится ли он сейчас в угле обзора соседа
+        if (HideInteraction.IsPlayerHidden)
+        {
+            // Если игрок вне радиуса или вне угла обзора — сосед теряет его из виду
+            // (даже если видел до укрытия). Луч препятствий НЕ проверяем,
+            // потому что укрытие по определению находится за препятствием (мебелью).
+            bool currentlyInSight = distance <= visionRange && angle <= visionAngle * 0.5f;
+
+            if (!currentlyInSight)
+            {
+                // Игрок ушёл из угла обзора — сосед забывает, что видел его
+                _playerSeenBeforeHiding = false;
+            }
+
+            if (!_playerSeenBeforeHiding)
+            {
+                // Сосед не видел игрока до укрытия, или игрок ушёл из обзора → безопасно
+                _detectionTimer = 0f;
+                _playerDetected = false;
+                return;
+            }
+            else
+            {
+                // Сосед видел игрока, и игрок всё ещё в угле обзора → продолжает отсчёт
+                _playerDetected = true;
+                _detectionTimer += Time.deltaTime;
+                if (_detectionTimer >= detectionDelay)
+                    GameOver();
+                return;
+            }
+        }
+
+        // --- ОБЫЧНОЕ ОБНАРУЖЕНИЕ (игрок НЕ в укрытии) ---
+
+        // --- УСЛОВИЕ 2: Игрок в радиусе обзора? ---
         if (distance > visionRange)
         {
             _detectionTimer = 0f;
             _playerDetected = false;
+            _playerSeenBeforeHiding = false; // игрок ушёл из зоны видимости — забываем
             return;
         }
 
         // --- УСЛОВИЕ 3: Игрок в угле обзора? (visionAngle / 2 в каждую сторону от forward) ---
-        float angle = Vector3.Angle(transform.forward, directionToPlayer.normalized);
         if (angle > visionAngle * 0.5f)
         {
             _detectionTimer = 0f;
             _playerDetected = false;
+            _playerSeenBeforeHiding = false; // игрок ушёл из угла обзора — забываем
             return;
         }
 
         // --- УСЛОВИЕ 4: Нет препятствий между соседом и игроком? ---
-        Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
         if (Physics.Raycast(rayOrigin, directionToPlayer.normalized, distance, visionObstacleMask))
         {
             _detectionTimer = 0f;
             _playerDetected = false;
+            _playerSeenBeforeHiding = false; // игрок скрылся за препятствием — забываем
             return;
         }
 
-        // Все условия выполнены — накапливаем таймер
+        // Все условия выполнены — игрок видим
         _playerDetected = true;
         _detectionTimer += Time.deltaTime;
 
@@ -220,6 +261,7 @@ public class NeighborController : MonoBehaviour
         {
             // --- НАЧАТЬ ПРЕСЛЕДОВАНИЕ ---
             _isPursuing = true;
+            _playerSeenBeforeHiding = true;
             _agent.speed = pursuitSpeed;
             _agent.autoBraking = false; // не тормозить при приближении — гонимся до упора
         }
@@ -227,6 +269,7 @@ public class NeighborController : MonoBehaviour
         {
             // --- ИГРОК ПОТЕРЯН: СТОЯТЬ НА МЕСТЕ И ЖДАТЬ ---
             _isPursuing = false;
+            _playerSeenBeforeHiding = false; // сосед потерял игрока — забывает, что видел
             _agent.isStopped = true;
             _agent.autoBraking = true;
             StartCoroutine(WaitBeforeReturnToPatrol());
@@ -315,6 +358,7 @@ public class NeighborController : MonoBehaviour
             _currentRoomTag = null;
             _detectionTimer = 0f;
             _playerDetected = false;
+            _playerSeenBeforeHiding = false;
         }
     }
 

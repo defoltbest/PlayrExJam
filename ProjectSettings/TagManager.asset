@@ -5,12 +5,12 @@ TagManager:
   serializedVersion: 3
   tags:
   - Door
-  - Warderobe
   - Neighbor
   - Bathroom
   - Livingroom
   - Hallway
   - Kitchen
+  - ItemFurniture
   layers:
   - Default
   - TransparentFX

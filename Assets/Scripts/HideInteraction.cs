@@ -30,8 +30,21 @@ public class HideInteraction : MonoBehaviour
     private bool _isPlayerInZone;
     private bool _isHidden;
 
+    /// <summary>
+    /// Статический флаг: спрятан ли игрок прямо сейчас (в любом укрытии).
+    /// Используется NeighborController для определения, был ли игрок замечен до укрытия.
+    /// </summary>
+    public static bool IsPlayerHidden { get; private set; }
+
     private Camera _mainCamera;
     private CameraFollow _cameraFollow;
+
+    private void OnDestroy()
+    {
+        // Сбрасываем статический флаг при выгрузке сцены (рестарт игры),
+        // иначе после SceneManager.LoadScene он останется true и сломает логику соседа.
+        IsPlayerHidden = false;
+    }
 
     private void Start()
     {
@@ -112,6 +125,7 @@ public class HideInteraction : MonoBehaviour
         if (_cameraFollow != null) _cameraFollow.enabled = false;
 
         _isHidden = true;
+        IsPlayerHidden = true;
 
         UpdateTooltipText();
         if (tooltip != null)
@@ -134,6 +148,7 @@ public class HideInteraction : MonoBehaviour
         if (agent != null) agent.enabled = true;
 
         _isHidden = false;
+        IsPlayerHidden = false;
 
         UpdateTooltipText();
         if (tooltip != null)
