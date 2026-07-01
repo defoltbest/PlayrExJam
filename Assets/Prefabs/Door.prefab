@@ -51,8 +51,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.7384677, y: 2.9822037, z: 1.2332006}
-  m_Center: {x: -0.00000023841858, y: 1.5158027, z: 0.6024345}
+  m_Size: {x: 1.7384677, y: 1.7353225, z: 0.5932082}
+  m_Center: {x: -0.00000023841858, y: 0.8923621, z: 0.30450696}
 --- !u!1 &529515636903418557
 GameObject:
   m_ObjectHideFlags: 0
@@ -80,8 +80,8 @@ Transform:
   m_GameObject: {fileID: 529515636903418557}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.66, z: 0.3}
-  m_LocalScale: {x: 0.1, y: 1.3, z: 0.55}
+  m_LocalPosition: {x: 0, y: 0.9, z: 0.3}
+  m_LocalScale: {x: 0.1, y: 1.7, z: 0.65}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6982146913949916987}
@@ -195,7 +195,9 @@ MonoBehaviour:
   openAngle: 95
   openSpeed: 320
   isOpen: 0
-  playerTag: Player
+  triggerTags:
+  - Player
+  - Neighbor
   triggerZone: {fileID: 9204925808154509158}
 --- !u!65 &-4080155707284717373
 BoxCollider:
