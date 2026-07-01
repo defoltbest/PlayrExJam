@@ -43,6 +43,16 @@ public class NeighborController : MonoBehaviour
     private bool _playerDetected;
     private bool _isGameOver = false;
 
+    // --- Преследование ---
+    [Header("Преследование")]
+    [Tooltip("Скорость движения при преследовании игрока")]
+    [SerializeField] private float pursuitSpeed = 4f;
+    [Tooltip("Скорость поворота при преследовании игрока")]
+    [SerializeField] private float pursuitRotationSpeed = 720f;
+
+    private bool _isPursuing = false;
+    private float _patrolSpeed;
+
     [Header("Game Over")]
     [SerializeField] private GameObject gameOverMenu;
     [SerializeField] private PlayerController playerController;
@@ -70,6 +80,9 @@ public class NeighborController : MonoBehaviour
 
     private void Start()
     {
+        // Сохраняем патрульную скорость агента
+        _patrolSpeed = _agent.speed;
+
         // Подписываемся на кнопку Retry в меню проигрыша
         if (gameOverMenu != null)
         {
@@ -95,7 +108,10 @@ public class NeighborController : MonoBehaviour
         // Всегда проверяем обнаружение игрока (даже когда ждём на точке)
         DetectPlayer();
 
-        if (waypoints.Count == 0 || _isWaiting)
+        // --- Преследование / возврат к патрулированию ---
+        HandlePursuit();
+
+        if (waypoints.Count == 0 || _isWaiting || _isPursuing)
             return;
 
         // --- Поворот в сторону движения (угол обзора = forward) ---
@@ -178,6 +194,48 @@ public class NeighborController : MonoBehaviour
         if (_detectionTimer >= detectionDelay)
         {
             GameOver();
+        }
+    }
+
+    /// <summary>
+    /// Управляет преследованием: если игрок обнаружен — начинает преследовать его;
+    /// если игрок вышел из зоны видимости — возвращается к патрулированию.
+    /// </summary>
+    private void HandlePursuit()
+    {
+        if (_playerDetected && !_isPursuing)
+        {
+            // --- НАЧАТЬ ПРЕСЛЕДОВАНИЕ ---
+            _isPursuing = true;
+            _agent.speed = pursuitSpeed;
+            _agent.autoBraking = false; // не тормозить при приближении — гонимся до упора
+        }
+        else if (!_playerDetected && _isPursuing)
+        {
+            // --- ПРЕКРАТИТЬ ПРЕСЛЕДОВАНИЕ, ВЕРНУТЬСЯ К ПАТРУЛЮ ---
+            _isPursuing = false;
+            _agent.speed = _patrolSpeed;
+            _agent.autoBraking = true;
+            GoToNextWaypoint(); // продолжить с текущей точки маршрута
+        }
+
+        if (_isPursuing)
+        {
+            // Постоянно обновляем destination на позицию игрока
+            _agent.SetDestination(_playerTransform.position);
+
+            // Плавно поворачиваемся лицом к игроку
+            Vector3 dirToPlayer = (_playerTransform.position - transform.position);
+            dirToPlayer.y = 0f;
+            if (dirToPlayer.sqrMagnitude > 0.001f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(dirToPlayer.normalized, Vector3.up);
+                transform.rotation = Quaternion.RotateTowards(
+                    transform.rotation,
+                    targetRotation,
+                    pursuitRotationSpeed * Time.deltaTime
+                );
+            }
         }
     }
 

@@ -7237,7 +7237,7 @@ PrefabInstance:
       objectReference: {fileID: 1735771107}
     - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: detectionDelay
-      value: 0.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: timerController
