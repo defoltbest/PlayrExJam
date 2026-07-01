@@ -7200,8 +7200,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 518867848009511567, guid: e1553b2c118d42648a49140c01124498, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 518867848009511567, guid: e1553b2c118d42648a49140c01124498, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 518867848009511567, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 860722596930335609, guid: e1553b2c118d42648a49140c01124498, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 860722596930335609, guid: e1553b2c118d42648a49140c01124498, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1724821791301491598, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: m_Constraints

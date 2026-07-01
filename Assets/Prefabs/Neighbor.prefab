@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 1262092574237969849}
   - component: {fileID: 33980584512044547}
   - component: {fileID: 5927063565214111260}
-  - component: {fileID: 1947717740763584640}
   m_Layer: 0
   m_Name: Neighbor
   m_TagString: Neighbor
@@ -67,8 +66,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.49818587, y: 1.6614835, z: 0.5057895}
-  m_Center: {x: 0.00000024214387, y: 0.3307414, z: -0.0038015842}
+  m_Size: {x: 0.49818575, y: 1.1596702, z: 0.5057895}
+  m_Center: {x: 0.00000029802322, y: 0.5816496, z: -0.0038015842}
 --- !u!23 &6301568680772778745
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -211,28 +210,6 @@ MonoBehaviour:
   gameOverMenu: {fileID: 0}
   playerController: {fileID: 0}
   timerController: {fileID: 0}
---- !u!95 &1947717740763584640
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6580149833190985111}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 531044d40b9f49241ae99b32f0ba8ca7, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &6222275007523507998
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -247,7 +224,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.48
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
       propertyPath: m_LocalPosition.z

@@ -33,6 +33,7 @@ public class NeighborController : MonoBehaviour
     [SerializeField] private LayerMask visionObstacleMask = -1;
 
     private NavMeshAgent _agent;
+    private Animator _animator;
     private int _currentWaypointIndex = 0;
     private bool _isWaiting = false;
 
@@ -62,6 +63,8 @@ public class NeighborController : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         _agent.updateRotation = false; // Берем управление поворотом на себя
+
+        _animator = GetComponentInChildren<Animator>();
         
         // Rigidbody для корректной работы OnTriggerEnter
         var rb = GetComponent<Rigidbody>();
@@ -110,6 +113,13 @@ public class NeighborController : MonoBehaviour
 
         // --- Преследование / возврат к патрулированию ---
         HandlePursuit();
+
+        // --- Управление анимацией: IsWalking = true когда агент движется ---
+        if (_animator != null)
+        {
+            bool isMoving = _agent.velocity.sqrMagnitude > 0.01f && !_isWaiting;
+            _animator.SetBool("IsWalking", isMoving);
+        }
 
         if (waypoints.Count == 0 || _isWaiting || _isPursuing)
             return;
