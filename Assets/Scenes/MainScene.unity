@@ -1272,7 +1272,6 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
-  - component: {fileID: 330585549}
   - component: {fileID: 330585550}
   m_Layer: 0
   m_Name: Main Camera
@@ -1399,18 +1398,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!114 &330585549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2c3d4e5f6071829304a5b6c7d8e9f01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DoorClickController
 --- !u!114 &330585550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2584,7 +2571,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 518273929}
-  - component: {fileID: 518273928}
   m_Layer: 0
   m_Name: GameSetup
   m_TagString: Untagged
@@ -2592,18 +2578,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &518273928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 518273927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 029030a873c434549b17e193468ffdd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameBootstrap
 --- !u!4 &518273929
 Transform:
   m_ObjectHideFlags: 0
@@ -3664,7 +3638,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 900000002}
-  - component: {fileID: 900000003}
   m_Layer: 0
   m_Name: HouseMain
   m_TagString: Untagged
@@ -3690,18 +3663,6 @@ Transform:
   - {fileID: 438761016}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &900000003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900000001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c4f2a1e9b3d4c5f6a7b8c9d0e1f2a3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &901907584
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6908,6 +6869,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9000000, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
     - target: {fileID: 5866666021909216657, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: b7dec30d7df0d42429e0be280abaef5d, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 541667afce7c1db41b8713f2765154dd, type: 2}
@@ -7234,6 +7199,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 518867848009511567, guid: e1553b2c118d42648a49140c01124498, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1724821791301491598, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: m_Constraints
       value: 116
