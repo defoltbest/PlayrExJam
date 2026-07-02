@@ -51,8 +51,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.814578, y: 1.887543, z: 1.0879251}
-  m_Center: {x: -0.00000047683716, y: 1.0572678, z: 0.29816443}
+  m_Size: {x: 1.1901844, y: 1.8875432, z: 1.0879251}
+  m_Center: {x: -0.00000059604645, y: 1.0572678, z: 0.29816446}
 --- !u!1 &7092831794231594195
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,7 +66,7 @@ GameObject:
   - component: {fileID: 1796697487341063816}
   - component: {fileID: 5284881145238076707}
   m_Layer: 0
-  m_Name: Door
+  m_Name: DoorMain
   m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,8 +108,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.7384677, y: 2.9822037, z: 1.2332006}
-  m_Center: {x: -0.00000023841858, y: 1.5158027, z: 0.6024345}
+  m_Size: {x: 0.12818933, y: 1.9141624, z: 1.9068891}
+  m_Center: {x: 0.008215308, y: 1.0557237, z: 0.26559114}
 --- !u!54 &1796697487341063816
 Rigidbody:
   m_ObjectHideFlags: 0

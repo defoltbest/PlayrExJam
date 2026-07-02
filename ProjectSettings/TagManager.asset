@@ -12,6 +12,7 @@ TagManager:
   - Kitchen
   - ItemFurniture
   - Entrance
+  - DoorEntrance
   layers:
   - Default
   - TransparentFX

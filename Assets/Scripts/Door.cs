@@ -22,9 +22,13 @@ public class Door : MonoBehaviour
     bool hasTriggerZone;
     float angle;
     bool playerInside;
+    bool isEntranceLocked; // true, если дверь требует разблокировки (тег DoorEntrance)
 
     void Awake()
     {
+        // Дверь с тегом DoorEntrance заблокирована до вызова Unlock()
+        isEntranceLocked = CompareTag("DoorEntrance");
+
         closedWorldRotation = transform.rotation;
         angle = isOpen ? openAngle : 0f;
 
@@ -38,10 +42,10 @@ public class Door : MonoBehaviour
 
         if (triggerZone == null)
         {
-            // Автопоиск дочернего объекта с Collider.isTrigger
+            // Автопоиск дочернего объекта с Collider (isTrigger не обязателен для заблокированных дверей)
             foreach (var c in GetComponentsInChildren<Collider>())
             {
-                if (c.isTrigger && c.transform != transform)
+                if (c.transform != transform)
                 {
                     triggerZone = c;
                     break;
@@ -52,14 +56,16 @@ public class Door : MonoBehaviour
         if (triggerZone == null)
         {
             Debug.LogError(
-                $"Door '{name}': укажите в инспекторе triggerZone — невращающийся дочерний коллайдер с isTrigger=true.\n" +
-                $"Создайте пустой дочерний объект (напр. 'TriggerZone'), добавьте BoxCollider (isTrigger), " +
+                $"Door '{name}': укажите в инспекторе triggerZone — невращающийся дочерний коллайдер.\n" +
+                $"Создайте пустой дочерний объект (напр. 'TriggerZone'), добавьте BoxCollider, " +
                 $"разместите его в районе петли. Он НЕ должен вращаться вместе с дверью.",
                 this);
         }
-        else if (!triggerZone.isTrigger)
+        else
         {
-            Debug.LogWarning($"Door '{name}': triggerZone должен быть isTrigger=true.", this);
+            // Заблокированные двери (DoorEntrance): isTrigger = false — физический барьер
+            // Обычные/разблокированные двери: isTrigger = true — свободный проход
+            triggerZone.isTrigger = !isEntranceLocked;
         }
     }
 
@@ -73,7 +79,9 @@ public class Door : MonoBehaviour
         if (triggerZone != null)
             playerInside = CheckPlayerInTrigger();
 
-        SetOpen(playerInside);
+        // Дверь с тегом DoorEntrance не открывается автоматически, пока не разблокирована
+        if (!isEntranceLocked)
+            SetOpen(playerInside);
 
         var target = isOpen ? openAngle : 0f;
         if (Mathf.Approximately(angle, target))
@@ -112,6 +120,16 @@ public class Door : MonoBehaviour
         if (hasTriggerZone && triggerZone != null)
             triggerZone.transform.rotation = triggerZoneOriginalWorldRotation;
     }
+
+    /// <summary>Разблокирует входную дверь (тег DoorEntrance) — включает isTrigger и дверь начинает открываться автоматически.</summary>
+    public void Unlock()
+    {
+        isEntranceLocked = false;
+        if (triggerZone != null)
+            triggerZone.isTrigger = true;
+    }
+
+    public bool IsEntranceLocked => isEntranceLocked;
 
     public void Toggle() => isOpen = !isOpen;
 
