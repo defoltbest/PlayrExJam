@@ -207,6 +207,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   pursuitSpeed: 4
   pursuitRotationSpeed: 720
+  waitTimeAfterLosingPlayer: 2
   gameOverMenu: {fileID: 0}
   playerController: {fileID: 0}
   timerController: {fileID: 0}
@@ -263,23 +264,16 @@ PrefabInstance:
       value: T-Pose
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 531044d40b9f49241ae99b32f0ba8ca7, type: 2}
     - target: {fileID: 5866666021909216657, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-        'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
-        'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:LeftHandThumb3'\n\tTransform
-        'mixamorig:RightArm'\n\tTransform 'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tand
-        more ...\n\tFrom animation clip 'BreathingIdle'\n\tFrom animation clip 'AngryPoint'\n\tFrom
-        animation clip 'Drinking'\n\tFrom animation clip 'LookingAround'\n\tFrom
-        animation clip 'SittingDrinking'\n\tFrom animation clip 'SittingIdle'\n\tFrom
-        animation clip 'SittingLaughing'\n\tFrom animation clip 'SittingYell'\n\tFrom
-        animation clip 'SitToStand'\n\tFrom animation clip 'StandToSit'\n\tand more
-        ..."
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: e3bf28361386cb148ac3ba4d8789724b, type: 3}
       propertyPath: m_ApplyRootMotion
