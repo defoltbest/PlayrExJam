@@ -2046,10 +2046,10 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -4259,6 +4259,59 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8764770897818525512, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
   m_PrefabInstance: {fileID: 299441441}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1045504830
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1045504831}
+  - component: {fileID: 1045504832}
+  m_Layer: 0
+  m_Name: Entrance
+  m_TagString: Entrance
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1045504831
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045504830}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1263863412}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1045504832
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045504830}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.6289978, y: 3.365948, z: 4.189621}
+  m_Center: {x: 10.461813, y: 1.182974, z: 7.0660353}
 --- !u!82 &1047987714 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 8613634296369491617, guid: f34601114d2a5e24595392b09bbc1e2d, type: 3}
@@ -4472,6 +4525,7 @@ Transform:
   - {fileID: 1264073595}
   - {fileID: 1730241762}
   - {fileID: 31392612}
+  - {fileID: 1045504831}
   - {fileID: 1649181197}
   - {fileID: 860393829}
   - {fileID: 612323603}
@@ -7241,7 +7295,7 @@ PrefabInstance:
       objectReference: {fileID: 1735771107}
     - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: detectionDelay
-      value: 0.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: timerController

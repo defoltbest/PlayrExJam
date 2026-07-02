@@ -36,6 +36,15 @@ public class HideInteraction : MonoBehaviour
     /// </summary>
     public static bool IsPlayerHidden { get; private set; }
 
+    /// <summary>
+    /// Сбрасывает статический флаг IsPlayerHidden.
+    /// Вызывается извне (PlayerController) при перезапуске сцены.
+    /// </summary>
+    public static void ResetHiddenState()
+    {
+        IsPlayerHidden = false;
+    }
+
     private Camera _mainCamera;
     private CameraFollow _cameraFollow;
 

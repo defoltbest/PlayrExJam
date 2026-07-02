@@ -11,6 +11,7 @@ TagManager:
   - Hallway
   - Kitchen
   - ItemFurniture
+  - Entrance
   layers:
   - Default
   - TransparentFX

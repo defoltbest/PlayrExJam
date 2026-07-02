@@ -32,6 +32,11 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        // Сбрасываем статические поля при перезапуске сцены,
+        // иначе после SceneManager.LoadScene они сохраняют старые значения.
+        CurrentRoomTag = null;
+        HideInteraction.ResetHiddenState();
+
         _mainCamera = Camera.main;
 
         // Rigidbody для корректной работы OnTriggerEnter (требуется физическим движком)
@@ -153,9 +158,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Проверяем, является ли триггер комнатой (теги Kitchen, Hallway, Livingroom, Bathroom)
+        // Проверяем, является ли триггер комнатой
         string tag = other.tag;
-        if (tag == "Kitchen" || tag == "Hallway" || tag == "Livingroom" || tag == "Bathroom")
+        if (tag == "Kitchen" || tag == "Hallway" || tag == "Livingroom" || tag == "Bathroom" || tag == "Entrance")
         {
             CurrentRoomTag = tag;
         }

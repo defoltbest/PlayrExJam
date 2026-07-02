@@ -334,7 +334,7 @@ public class NeighborController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         string tag = other.tag;
-        if (tag == "Kitchen" || tag == "Hallway" || tag == "Livingroom" || tag == "Bathroom")
+        if (tag == "Kitchen" || tag == "Hallway" || tag == "Livingroom" || tag == "Bathroom" || tag == "Entrance") 
         {
             _currentRoomTag = tag;
         }
