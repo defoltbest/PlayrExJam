@@ -69,6 +69,13 @@ private static readonly int IsPursuingHash = Animator.StringToHash("IsPursuing")
     [SerializeField] private PlayerController playerController;
     [SerializeField] private TimerController timerController;
 
+    [Header("Предметы")]
+    // Чтобы брать кружку в руку
+    [SerializeField] private Transform cup;
+    [SerializeField] private Transform cupHoldPoint;
+    [SerializeField] private Transform cupTablePoint;
+
+
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -266,6 +273,7 @@ private static readonly int IsPursuingHash = Animator.StringToHash("IsPursuing")
     {
         if (_playerDetected && !_isPursuing)
 {
+    PutCupBack(); //кружку вернули при погоне
     // Если сосед стоял на точке и проигрывал анимацию — прерываем ожидание
     if (_waitCoroutine != null)
 {
@@ -400,6 +408,12 @@ private static readonly int IsPursuingHash = Animator.StringToHash("IsPursuing")
     // Включаем анимацию для конкретной точки
     if (_animator != null && !string.IsNullOrWhiteSpace(currentPoint.animationTrigger))
     {
+        //Пьем из кружки
+        if (currentPoint.animationTrigger == "Drink")
+        {
+          TakeCup();
+        }
+
         _animator.SetTrigger(currentPoint.animationTrigger);
     }
 
@@ -407,6 +421,12 @@ private static readonly int IsPursuingHash = Animator.StringToHash("IsPursuing")
     if (currentPoint.waitTime > 0)
     {
         yield return new WaitForSeconds(currentPoint.waitTime);
+    }
+
+  //Возвращаем кружку на базу
+    if (currentPoint.animationTrigger == "Drink")
+    {
+        PutCupBack();
     }
 
     _waitCoroutine = null;
@@ -494,7 +514,7 @@ private void StartWaitingAtWaypoint()
     _waitCoroutine = StartCoroutine(WaitAndProceed());
 }
 
-//Мы не идем в ту же точку, если погнались за игроком
+//Мы не идем в ту же точку, если погнались за игроком (на самом деле это не работает)
 private void AdvanceWaypointIndex()
 {
     _currentWaypointIndex++;
@@ -503,6 +523,42 @@ private void AdvanceWaypointIndex()
     {
         _currentWaypointIndex = 0;
     }
+}
+
+// Берем кружку
+private void TakeCup()
+{
+    Debug.Log("TakeCup вызван");
+
+    if (cup == null)
+    {
+        Debug.LogError("Cup не назначена в инспекторе!");
+        return;
+    }
+
+    if (cupHoldPoint == null)
+    {
+        Debug.LogError("CupHoldPoint не назначен в инспекторе!");
+        return;
+    }
+
+    Debug.Log("Берём кружку: " + cup.name + " -> " + cupHoldPoint.name);
+
+    cup.SetParent(cupHoldPoint);
+
+    cup.localPosition = Vector3.zero;
+    cup.localRotation = Quaternion.identity;
+}
+// Возвращаем кружку
+private void PutCupBack()
+{
+    if (cup == null || cupTablePoint == null)
+        return;
+
+    cup.SetParent(cupTablePoint);
+
+    cup.localPosition = Vector3.zero;
+    cup.localRotation = Quaternion.identity;
 }
 
 #if UNITY_EDITOR
