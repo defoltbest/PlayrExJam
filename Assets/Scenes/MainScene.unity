@@ -2104,7 +2104,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3712584508123373210, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.21
+      value: 0.716
       objectReference: {fileID: 0}
     - target: {fileID: 3712584508123373210, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2112,7 +2112,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3712584508123373210, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.24
+      value: 6.37
       objectReference: {fileID: 0}
     - target: {fileID: 3712584508123373210, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2144,7 +2144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8910312289331827468, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_Name
-      value: Waypoint (1)
+      value: Drink
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8512,7 +8512,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3712584508123373210, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.45781
+      value: 3.209
       objectReference: {fileID: 0}
     - target: {fileID: 3712584508123373210, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8544,7 +8544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8910312289331827468, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_Name
-      value: Waypoint (2)
+      value: TV
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8650,7 +8650,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7092831794231594195, guid: 2faecadea9f02bf46ad1d2b1ca992a38, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7092831794231594195, guid: 2faecadea9f02bf46ad1d2b1ca992a38, type: 3}
       propertyPath: m_TagString
@@ -10576,7 +10576,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3712584508123373210, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.37
+      value: 7.07
       objectReference: {fileID: 0}
     - target: {fileID: 3712584508123373210, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10584,7 +10584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3712584508123373210, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.45781
+      value: 2.59
       objectReference: {fileID: 0}
     - target: {fileID: 3712584508123373210, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10616,7 +10616,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8910312289331827468, guid: f0c8b106fab51d440b08bdd42059bad6, type: 3}
       propertyPath: m_Name
-      value: Waypoint
+      value: Toilet
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10700,26 +10700,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1724821791301491598, guid: e1553b2c118d42648a49140c01124498, type: 3}
-      propertyPath: m_Constraints
-      value: 116
-      objectReference: {fileID: 0}
-    - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
-      propertyPath: visionAngle
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
-      propertyPath: visionRange
-      value: 1000
-      objectReference: {fileID: 0}
     - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: gameOverMenu
       value: 
       objectReference: {fileID: 1735771107}
-    - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
-      propertyPath: detectionDelay
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: timerController
       value: 
@@ -10728,14 +10712,6 @@ PrefabInstance:
       propertyPath: playerController
       value: 
       objectReference: {fileID: 2133614568}
-    - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
-      propertyPath: waypoints.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
-      propertyPath: visionObstacleMask.m_Bits
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: waypoints.Array.data[0].point
       value: 
@@ -10748,18 +10724,6 @@ PrefabInstance:
       propertyPath: waypoints.Array.data[2].point
       value: 
       objectReference: {fileID: 1763609840}
-    - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
-      propertyPath: waypoints.Array.data[0].waitTime
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
-      propertyPath: waypoints.Array.data[1].waitTime
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5927063565214111260, guid: e1553b2c118d42648a49140c01124498, type: 3}
-      propertyPath: waypoints.Array.data[2].waitTime
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 6086431007072081650, guid: e1553b2c118d42648a49140c01124498, type: 3}
       propertyPath: m_Material
       value: 

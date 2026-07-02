@@ -198,13 +198,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed813843f00858479ebb044840b1b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NeighborController
-  waypoints: []
-  visionRange: 10
+  waypoints:
+  - point: {fileID: 0}
+    waitTime: 2
+    animationTrigger: Toilet
+  - point: {fileID: 0}
+    waitTime: 10
+    animationTrigger: Drink
+  - point: {fileID: 0}
+    waitTime: 2
+    animationTrigger: TV
+  visionRange: 1000
   visionAngle: 90
-  detectionDelay: 0.7
+  detectionDelay: 2
   visionObstacleMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   pursuitSpeed: 4
   pursuitRotationSpeed: 720
   waitTimeAfterLosingPlayer: 2

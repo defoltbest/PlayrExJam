@@ -10,9 +10,12 @@ public struct NeighborWaypoint
 {
     [Tooltip("Точка на сцене, куда пойдет сосед")]
     public Transform point;
-    
-    [Tooltip("Время ожидания в этой точке (в секундах)")]
+
+    [Tooltip("Время ожидания в этой точке, пока проигрывается анимация")]
     public float waitTime;
+
+    [Tooltip("Trigger-параметр в Animator Controller, который включится в этой точке. Например: Drink, WatchTV, ScratchHead")]
+    public string animationTrigger;
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -36,6 +39,9 @@ public class NeighborController : MonoBehaviour
     private Animator _animator;
     private int _currentWaypointIndex = 0;
     private bool _isWaiting = false;
+    private Coroutine _waitCoroutine;
+private static readonly int IsWalkingHash = Animator.StringToHash("IsWalking");
+private static readonly int IsPursuingHash = Animator.StringToHash("IsPursuing");
 
     // --- Обнаружение игрока ---
     private string _currentRoomTag;
@@ -69,6 +75,11 @@ public class NeighborController : MonoBehaviour
         _agent.updateRotation = false; // Берем управление поворотом на себя
 
         _animator = GetComponentInChildren<Animator>();
+        
+        if (_animator != null)
+{
+    _animator.applyRootMotion = false;
+}
         
         // Rigidbody для корректной работы OnTriggerEnter
         var rb = GetComponent<Rigidbody>();
@@ -119,11 +130,7 @@ public class NeighborController : MonoBehaviour
         HandlePursuit();
 
         // --- Управление анимацией: IsWalking = true когда агент движется ---
-        if (_animator != null)
-        {
-            bool isMoving = _agent.velocity.sqrMagnitude > 0.01f && !_isWaiting;
-            _animator.SetBool("IsWalking", isMoving);
-        }
+       UpdateAnimation();
 
         if (waypoints.Count == 0 || _isWaiting || _isPursuing)
             return;
@@ -258,13 +265,27 @@ public class NeighborController : MonoBehaviour
     private void HandlePursuit()
     {
         if (_playerDetected && !_isPursuing)
-        {
-            // --- НАЧАТЬ ПРЕСЛЕДОВАНИЕ ---
-            _isPursuing = true;
-            _playerSeenBeforeHiding = true;
-            _agent.speed = pursuitSpeed;
-            _agent.autoBraking = false; // не тормозить при приближении — гонимся до упора
-        }
+{
+    // Если сосед стоял на точке и проигрывал анимацию — прерываем ожидание
+    if (_waitCoroutine != null)
+{
+    StopCoroutine(_waitCoroutine);
+    _waitCoroutine = null;
+
+    // Считаем, что действие в этой точке уже было прервано,
+    // поэтому после погони сосед пойдёт к следующей точке, а не вернётся пить чай заново.
+    AdvanceWaypointIndex();
+}
+
+    _isWaiting = false;
+    _agent.isStopped = false;
+
+    // --- НАЧАТЬ ПРЕСЛЕДОВАНИЕ ---
+    _isPursuing = true;
+    _playerSeenBeforeHiding = true;
+    _agent.speed = pursuitSpeed;
+    _agent.autoBraking = false;
+}
         else if (!_playerDetected && _isPursuing && !_isWaitingAfterLosingPlayer)
         {
             // --- ИГРОК ПОТЕРЯН: СТОЯТЬ НА МЕСТЕ И ЖДАТЬ ---
@@ -363,27 +384,44 @@ public class NeighborController : MonoBehaviour
     }
 
     private IEnumerator WaitAndProceed()
+{
+    _isWaiting = true;
+
+    _agent.isStopped = true;
+    _agent.ResetPath();
+
+    if (_animator != null)
     {
-        _isWaiting = true;
-
-        var currentPoint = waypoints[_currentWaypointIndex];
-        
-        // Ждем указанное время
-        if (currentPoint.waitTime > 0)
-        {
-            yield return new WaitForSeconds(currentPoint.waitTime);
-        }
-
-        // Переходим к следующей точке
-        _currentWaypointIndex++;
-        if (_currentWaypointIndex >= waypoints.Count)
-        {
-            _currentWaypointIndex = 0; // Зацикливаем маршрут
-        }
-
-        GoToNextWaypoint();
-        _isWaiting = false;
+        _animator.SetBool(IsWalkingHash, false);
     }
+
+    NeighborWaypoint currentPoint = waypoints[_currentWaypointIndex];
+
+    // Включаем анимацию для конкретной точки
+    if (_animator != null && !string.IsNullOrWhiteSpace(currentPoint.animationTrigger))
+    {
+        _animator.SetTrigger(currentPoint.animationTrigger);
+    }
+
+    // Пауза в точке
+    if (currentPoint.waitTime > 0)
+    {
+        yield return new WaitForSeconds(currentPoint.waitTime);
+    }
+
+    _waitCoroutine = null;
+    _isWaiting = false;
+
+    // Если за время ожидания началось преследование, не возвращаемся к маршруту
+    if (_isPursuing)
+        yield break;
+
+    _agent.isStopped = false;
+
+    AdvanceWaypointIndex();
+
+    GoToNextWaypoint();
+}
 
     /// <summary>
     /// Поворачивает соседа в сторону движения (forward = направление взгляда = угол обзора).
@@ -431,9 +469,41 @@ public class NeighborController : MonoBehaviour
         {
             Debug.LogError($"У соседа пропущена (null) точка под индексом {_currentWaypointIndex}!");
             // Попробуем пропустить пустую точку, чтобы он не застрял намертво
-            StartCoroutine(WaitAndProceed());
+            StartWaitingAtWaypoint();
         }
     }
+
+    private void UpdateAnimation()
+{
+    if (_animator == null) return;
+
+    bool isMoving =
+        !_agent.isStopped &&
+        !_isWaiting &&
+        _agent.velocity.sqrMagnitude > 0.01f;
+
+    _animator.SetBool(IsWalkingHash, isMoving);
+    _animator.SetBool(IsPursuingHash, _isPursuing);
+}
+
+private void StartWaitingAtWaypoint()
+{
+    if (_waitCoroutine != null)
+        return;
+
+    _waitCoroutine = StartCoroutine(WaitAndProceed());
+}
+
+//Мы не идем в ту же точку, если погнались за игроком
+private void AdvanceWaypointIndex()
+{
+    _currentWaypointIndex++;
+
+    if (_currentWaypointIndex >= waypoints.Count)
+    {
+        _currentWaypointIndex = 0;
+    }
+}
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
