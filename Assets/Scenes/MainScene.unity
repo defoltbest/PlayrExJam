@@ -1014,7 +1014,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7684224449552596912, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: itemName
-      value: Item2
+      value: PipeWrench
       objectReference: {fileID: 0}
     - target: {fileID: 8764770897818525512, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1026,7 +1026,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8764770897818525512, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.21
+      value: -5.84
       objectReference: {fileID: 0}
     - target: {fileID: 8764770897818525512, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2149,7 +2149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7684224449552596912, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: itemName
-      value: Item0
+      value: Key
       objectReference: {fileID: 0}
     - target: {fileID: 8764770897818525512, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3906,6 +3906,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CollectibleItem5
       objectReference: {fileID: 0}
+    - target: {fileID: 7684224449552596912, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
+      propertyPath: itemName
+      value: Knife
+      objectReference: {fileID: 0}
     - target: {fileID: 8764770897818525512, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.09
@@ -4866,6 +4870,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5371827680690657270, guid: 26b0235167f96ce42899d412a9bdbf6c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 757881209}
+    - targetCorrespondingSourceObject: {fileID: 3363035433566523681, guid: 26b0235167f96ce42899d412a9bdbf6c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 26b0235167f96ce42899d412a9bdbf6c, type: 3}
 --- !u!1 &1406495048
 GameObject:
@@ -5373,7 +5380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7684224449552596912, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: itemName
-      value: Item1
+      value: Booklet
       objectReference: {fileID: 0}
     - target: {fileID: 8764770897818525512, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5744,7 +5751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7684224449552596912, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: itemName
-      value: Item4
+      value: Receipt
       objectReference: {fileID: 0}
     - target: {fileID: 8764770897818525512, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6487,11 +6494,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7684224449552596912, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: itemName
-      value: Item3
+      value: RemoteController
       objectReference: {fileID: 0}
     - target: {fileID: 8764770897818525512, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.144
+      value: 11.96
       objectReference: {fileID: 0}
     - target: {fileID: 8764770897818525512, guid: 432ba94cb51a4c646810f684b62d8b86, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7336,7 +7343,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3363035433566523681, guid: 26b0235167f96ce42899d412a9bdbf6c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 26b0235167f96ce42899d412a9bdbf6c, type: 3}
 --- !u!1001 &6945503503724129808
 PrefabInstance:
